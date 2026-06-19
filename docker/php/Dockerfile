@@ -19,12 +19,15 @@ RUN apt-get update \
         pcntl \
         pdo_mysql \
         zip \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug \
     && groupmod -g ${WWWGROUP} www-data \
     && usermod -u ${WWWUSER} -g ${WWWGROUP} www-data \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY docker/php/xdebug.ini /usr/local/etc/php/conf.d/99-xdebug.ini
 COPY docker/php/entrypoint.sh /usr/local/bin/docker-entrypoint
 
 RUN chmod +x /usr/local/bin/docker-entrypoint

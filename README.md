@@ -9,7 +9,7 @@
 
 ## Docker
 
-O ambiente Docker usa PHP-FPM 8.5, MySQL e Nginx. A aplicação fica disponível em `http://localhost:8003`.
+O ambiente Docker usa PHP-FPM 8.5 com Xdebug, MySQL e Nginx. A aplicação fica disponível em `http://localhost:8003`.
 
 ```bash
 docker compose up -d --build
