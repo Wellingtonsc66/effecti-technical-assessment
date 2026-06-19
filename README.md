@@ -7,6 +7,17 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## Docker
+
+O ambiente Docker usa PHP-FPM 8.5, MySQL e Nginx. A aplicação fica disponível em `http://localhost:8003`.
+
+```bash
+docker compose up -d --build
+docker compose exec app php artisan migrate
+```
+
+O MySQL fica disponível para a aplicação pelo host interno `mysql`. As credenciais do ambiente Docker estão em `.env.example`.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
