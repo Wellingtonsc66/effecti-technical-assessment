@@ -262,6 +262,20 @@ function formatCurrency(value) {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value ?? 0));
 }
 
+function formatDate(value) {
+    if (!value) {
+        return '';
+    }
+
+    const [year, month, day] = String(value).split('-');
+
+    if (!year || !month || !day) {
+        return value;
+    }
+
+    return `${day}/${month}/${year}`;
+}
+
 function formatCurrencyInput(value) {
     const digits = String(value ?? '').replace(/\D/g, '').slice(0, 12);
 
@@ -590,7 +604,7 @@ function formatDocument(value) {
                         </template>
 
                         <template #subtitle>
-                            Início: {{ contract.start_date }} <span v-if="contract.end_date">| Término: {{ contract.end_date }}</span>
+                            Início: {{ formatDate(contract.start_date) }} <span v-if="contract.end_date">| Término: {{ formatDate(contract.end_date) }}</span>
                         </template>
 
                         <template #content>
