@@ -329,12 +329,12 @@ function formatDocument(value) {
 </script>
 
 <template>
-    <main class="min-h-screen bg-slate-50 px-4 py-6 text-slate-950 dark:bg-slate-950 dark:text-slate-50 sm:px-6 lg:px-8">
+    <main class="min-h-screen bg-slate-50 px-4 py-6 text-slate-950 sm:px-6 lg:px-8">
         <section class="mx-auto flex w-full max-w-7xl flex-col gap-5">
-            <header class="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between">
+            <header class="flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                    <p class="text-sm font-medium text-emerald-700 dark:text-emerald-300">Avaliação Técnica Effecti</p>
-                    <h1 class="mt-1 text-2xl font-semibold tracking-normal text-slate-950 dark:text-white">ERP de contratos e serviços</h1>
+                    <p class="text-sm font-medium text-emerald-700">Avaliação Técnica Effecti</p>
+                    <h1 class="mt-1 text-2xl font-semibold tracking-normal text-slate-950">ERP de contratos e serviços</h1>
                 </div>
 
                 <div class="flex flex-wrap items-center gap-2">
@@ -351,8 +351,8 @@ function formatDocument(value) {
                     v-for="tab in tabs"
                     :key="tab.key"
                     type="button"
-                    class="rounded-md border px-4 py-2 text-sm font-medium transition dark:border-slate-800"
-                    :class="activeTab === tab.key ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-slate-200 bg-white text-slate-700 hover:border-emerald-500 dark:bg-slate-900 dark:text-slate-200'"
+                    class="rounded-md border px-4 py-2 text-sm font-medium transition"
+                    :class="activeTab === tab.key ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-slate-200 bg-white text-slate-700 hover:border-emerald-500'"
                     @click="activeTab = tab.key"
                 >
                     {{ tab.label }}
@@ -636,7 +636,7 @@ function formatDocument(value) {
                                     </table>
                                 </div>
 
-                                <div class="grid gap-3 rounded-lg bg-slate-100 p-4 text-sm dark:bg-slate-800 sm:grid-cols-3">
+                                <div class="grid gap-3 rounded-lg bg-slate-100 p-4 text-sm sm:grid-cols-3">
                                     <span>Subtotal: <strong>{{ formatCurrency(contract.pricing.subtotal) }}</strong></span>
                                     <span v-for="adjustment in contract.pricing.adjustments" :key="adjustment.label">
                                         {{ adjustment.label }}: <strong>{{ formatCurrency(adjustment.amount) }}</strong>
@@ -649,9 +649,9 @@ function formatDocument(value) {
                                     <Button label="Excluir" size="small" severity="danger" outlined @click="deleteEntity('/api/contracts', contract.id, 'Contrato excluído.')" />
                                 </div>
 
-                                <details v-if="contract.changes.length" class="rounded-lg border border-slate-200 p-3 text-sm dark:border-slate-700">
+                                <details v-if="contract.changes.length" class="rounded-lg border border-slate-200 p-3 text-sm">
                                     <summary class="cursor-pointer font-medium">Histórico de alterações</summary>
-                                    <ul class="mt-3 flex flex-col gap-2 text-slate-600 dark:text-slate-300">
+                                    <ul class="mt-3 flex flex-col gap-2 text-slate-600">
                                         <li v-for="change in contract.changes" :key="change.id">
                                             {{ change.description }}
                                         </li>
@@ -708,22 +708,5 @@ function formatDocument(value) {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-}
-
-@media (prefers-color-scheme: dark) {
-    .form-select {
-        border-color: rgb(51 65 85);
-        background: rgb(15 23 42);
-        color: rgb(248 250 252);
-    }
-
-    .data-table th,
-    .data-table td {
-        border-color: rgb(51 65 85);
-    }
-
-    .data-table th {
-        color: rgb(203 213 225);
-    }
 }
 </style>

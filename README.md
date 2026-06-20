@@ -60,14 +60,13 @@ A interface usa PrimeVue com o preset Aura:
 
 - biblioteca visual: PrimeVue
 - preset de tema: Aura
-- modo escuro: automático, seguindo a preferência do sistema com `darkModeSelector: 'system'`
 - apoio de layout e utilitários: Tailwind CSS 4
 - linguagem visual aplicada na tela: base em tons slate com destaque em emerald
 
 Resumo do direcionamento visual:
 
-- cards claros e escuros para separar blocos de formulário e listagem
-- contraste compatível com modo claro e modo escuro
+- cards para separar blocos de formulário e listagem
+- contraste focado no tema claro da interface
 - tabelas responsivas com rolagem horizontal quando necessário
 - feedback visual com componentes do PrimeVue, como Button, Card, Message e Tag
 
@@ -276,5 +275,5 @@ Os principais pontos entregues nesta solução foram:
 - regra de negócio aberta tratada por serviço de pricing extensível
 - persistência de histórico de mudanças em contratos
 - interface única em Vue para operar todos os fluxos
-- suporte visual a modo claro e escuro com PrimeVue Aura e Tailwind CSS
+- interface com PrimeVue Aura e Tailwind CSS
 - cobertura básica de testes para os cenários críticos
