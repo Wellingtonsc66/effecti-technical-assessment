@@ -304,7 +304,7 @@ function formatDocument(value) {
                                     :model-value="clientForm.document"
                                     inputmode="numeric"
                                     maxlength="18"
-                                    placeholder="000.000.000-00 ou 00.000.000/0000-00"
+                                    placeholder="Digite o CPF ou CNPJ"
                                     required
                                     @input="handleDocumentInput"
                                 />
