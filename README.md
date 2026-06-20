@@ -2,7 +2,7 @@
 
 Aplicação de gestão de clientes, serviços e contratos, com backend em Laravel e interface administrativa em Vue 3.
 
-Para uma visão de arquitetura, decisões técnicas e evolução da solução, consulte também o documento [DOCUMENTO_TECNICO.md](DOCUMENTO_TECNICO.md).
+Para uma visão de arquitetura, decisões técnicas e evolução da solução, consulte também o documento [doc/TECHNICAL_DOCUMENT.md](doc/TECHNICAL_DOCUMENT.md).
 
 O projeto entrega:
 
