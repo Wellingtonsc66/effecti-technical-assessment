@@ -14,7 +14,7 @@ class ClientRequest extends FormRequest
         $client = $this->route('client');
 
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name'     => ['required', 'string', 'max:255'],
             'document' => [
                 'required',
                 'string',
@@ -25,7 +25,6 @@ class ClientRequest extends FormRequest
             'email' => [
                 'required',
                 'email:rfc',
-                'regex:/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/',
                 'max:255',
                 Rule::unique('clients', 'email')->ignore($client),
             ],
@@ -43,10 +42,10 @@ class ClientRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => 'nome',
+            'name'     => 'nome',
             'document' => 'CPF ou CNPJ',
-            'email' => 'e-mail',
-            'status' => 'status',
+            'email'    => 'e-mail',
+            'status'   => 'status',
         ];
     }
 }

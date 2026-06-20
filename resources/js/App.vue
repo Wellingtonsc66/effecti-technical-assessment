@@ -339,7 +339,6 @@ function formatDocument(value) {
 
                 <div class="flex flex-wrap items-center gap-2">
                     <Button label="Atualizar" size="small" :loading="loading" @click="loadData" />
-                    <Tag value="Vue + PrimeVue + API REST" severity="success" />
                 </div>
             </header>
 
