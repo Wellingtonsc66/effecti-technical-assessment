@@ -6,7 +6,14 @@
         "build": "vite build",
         "dev": "vite"
     },
+    "dependencies": {
+        "@primeuix/themes": "^2.0.2",
+        "axios": "^1.13.2",
+        "primevue": "^4.5.2",
+        "vue": "^3.5.25"
+    },
     "devDependencies": {
+        "@vitejs/plugin-vue": "^6.0.2",
         "@tailwindcss/vite": "^4.0.0",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^3.1",
