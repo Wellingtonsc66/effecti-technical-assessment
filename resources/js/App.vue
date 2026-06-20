@@ -295,7 +295,7 @@ function formatDocument(value) {
                         <form class="flex flex-col gap-4" @submit.prevent="saveClient">
                             <label class="field-label">
                                 Nome
-                                <InputText v-model="clientForm.name" required />
+                                <InputText v-model="clientForm.name" placeholder="Digite o nome completo" required />
                             </label>
 
                             <label class="field-label">
@@ -317,6 +317,7 @@ function formatDocument(value) {
                                     type="email"
                                     pattern="[^\s@]+@[^\s@]+\.[^\s@]{2,}"
                                     title="Informe um email com domínio completo, como nome@empresa.com"
+                                    placeholder="exemplo@dominio.com"
                                     required
                                 />
                             </label>
@@ -376,12 +377,12 @@ function formatDocument(value) {
                         <form class="flex flex-col gap-4" @submit.prevent="saveService">
                             <label class="field-label">
                                 Nome
-                                <InputText v-model="serviceForm.name" required />
+                                <InputText v-model="serviceForm.name" placeholder="Ex: Consultoria, Licença de Software" required />
                             </label>
 
                             <label class="field-label">
                                 Valor base mensal
-                                <InputText v-model="serviceForm.monthly_base_value" inputmode="decimal" required />
+                                <InputText v-model="serviceForm.monthly_base_value" inputmode="decimal" placeholder="0.00" required />
                             </label>
 
                             <div class="flex gap-2">
@@ -492,12 +493,12 @@ function formatDocument(value) {
 
                                 <label class="field-label">
                                     Quantidade
-                                    <InputText v-model="itemForm.quantity" type="number" min="1" :disabled="!canEditSelectedContract" required />
+                                    <InputText v-model="itemForm.quantity" type="number" min="1" :disabled="!canEditSelectedContract" placeholder="1" required />
                                 </label>
 
                                 <label class="field-label">
                                     Valor unitário
-                                    <InputText v-model="itemForm.unit_value" inputmode="decimal" :disabled="!canEditSelectedContract" />
+                                    <InputText v-model="itemForm.unit_value" inputmode="decimal" :disabled="!canEditSelectedContract" placeholder="Opcional se usar valor base" />
                                 </label>
 
                                 <Button type="submit" label="Adicionar" :disabled="!canEditSelectedContract" :loading="loading" />
