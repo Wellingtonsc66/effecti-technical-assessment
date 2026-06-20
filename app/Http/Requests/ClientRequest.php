@@ -39,4 +39,14 @@ class ClientRequest extends FormRequest
             'document' => preg_replace('/\D/', '', (string) $this->input('document')),
         ]);
     }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => 'nome',
+            'document' => 'CPF ou CNPJ',
+            'email' => 'e-mail',
+            'status' => 'status',
+        ];
+    }
 }
