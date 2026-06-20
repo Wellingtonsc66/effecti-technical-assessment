@@ -26,6 +26,20 @@ class ContractApiTest extends TestCase
             ->assertJsonValidationErrors('document');
     }
 
+    public function test_client_email_must_have_complete_domain(): void
+    {
+        $response = $this->postJson('/api/clients', [
+            'name' => 'Cliente inválido',
+            'document' => '52998224725',
+            'email' => 'cliente@gmail',
+            'status' => 'active',
+        ]);
+
+        $response
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors('email');
+    }
+
     public function test_contract_total_is_calculated_from_current_items_and_quantity_discount(): void
     {
         $client = Client::query()->create([

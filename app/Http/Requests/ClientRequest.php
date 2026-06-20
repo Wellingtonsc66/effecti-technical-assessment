@@ -24,7 +24,8 @@ class ClientRequest extends FormRequest
             ],
             'email' => [
                 'required',
-                'email',
+                'email:rfc',
+                'regex:/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/',
                 'max:255',
                 Rule::unique('clients', 'email')->ignore($client),
             ],

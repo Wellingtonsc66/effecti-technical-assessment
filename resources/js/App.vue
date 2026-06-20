@@ -153,7 +153,10 @@ async function removeContractItem(contractId, itemId) {
 }
 
 function editClient(client) {
-    Object.assign(clientForm, pick(client, ['id', 'name', 'document', 'email', 'status']));
+    Object.assign(clientForm, {
+        ...pick(client, ['id', 'name', 'document', 'email', 'status']),
+        document: formatDocument(client.document),
+    });
     activeTab.value = 'clients';
 }
 
@@ -174,6 +177,10 @@ function useBaseValue() {
 
 function resetClientForm() {
     Object.assign(clientForm, { id: null, name: '', document: '', email: '', status: 'active' });
+}
+
+function handleDocumentInput(event) {
+    clientForm.document = formatDocument(event.target.value);
 }
 
 function resetServiceForm() {
@@ -230,6 +237,23 @@ function statusSeverity(status) {
 function formatCurrency(value) {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value ?? 0));
 }
+
+function formatDocument(value) {
+    const digits = String(value ?? '').replace(/\D/g, '').slice(0, 14);
+
+    if (digits.length <= 11) {
+        return digits
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    }
+
+    return digits
+        .replace(/(\d{2})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1/$2')
+        .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+}
 </script>
 
 <template>
@@ -276,12 +300,25 @@ function formatCurrency(value) {
 
                             <label class="field-label">
                                 CPF ou CNPJ
-                                <InputText v-model="clientForm.document" required />
+                                <InputText
+                                    :model-value="clientForm.document"
+                                    inputmode="numeric"
+                                    maxlength="18"
+                                    placeholder="000.000.000-00 ou 00.000.000/0000-00"
+                                    required
+                                    @input="handleDocumentInput"
+                                />
                             </label>
 
                             <label class="field-label">
                                 Email
-                                <InputText v-model="clientForm.email" type="email" required />
+                                <InputText
+                                    v-model="clientForm.email"
+                                    type="email"
+                                    pattern="[^\s@]+@[^\s@]+\.[^\s@]{2,}"
+                                    title="Informe um email com domínio completo, como nome@empresa.com"
+                                    required
+                                />
                             </label>
 
                             <label class="field-label">
@@ -317,7 +354,7 @@ function formatCurrency(value) {
                                 <tbody>
                                     <tr v-for="client in clients" :key="client.id">
                                         <td>{{ client.name }}</td>
-                                        <td>{{ client.document }}</td>
+                                        <td>{{ formatDocument(client.document) }}</td>
                                         <td>{{ client.email }}</td>
                                         <td><Tag :value="statusLabel(client.status)" :severity="statusSeverity(client.status)" /></td>
                                         <td class="actions-cell">
