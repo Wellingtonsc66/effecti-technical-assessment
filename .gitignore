@@ -7,6 +7,7 @@
 .phpunit.result.cache
 /.codex
 /.cursor/
+/.docker/mysql/dbdata/
 /.idea
 /.nova
 /.phpunit.cache

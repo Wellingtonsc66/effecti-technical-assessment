@@ -40,6 +40,40 @@ class ContractApiTest extends TestCase
             ->assertJsonValidationErrors('email');
     }
 
+    public function test_contract_end_date_validation_message_is_translated(): void
+    {
+        $client = Client::query()->create([
+            'name' => 'Cliente Teste',
+            'document' => '52998224725',
+            'email' => 'cliente@example.com',
+            'status' => 'active',
+        ]);
+
+        $response = $this->postJson('/api/contracts', [
+            'client_id' => $client->id,
+            'start_date' => '2020-05-20',
+            'end_date' => '2020-01-01',
+            'status' => 'active',
+        ]);
+
+        $response
+            ->assertUnprocessable()
+            ->assertJsonPath('errors.end_date.0', 'A data de término deve ser posterior ou igual à data de início.');
+    }
+
+    public function test_contract_client_validation_message_is_translated(): void
+    {
+        $response = $this->postJson('/api/contracts', [
+            'client_id' => 999,
+            'start_date' => '2020-05-20',
+            'status' => 'active',
+        ]);
+
+        $response
+            ->assertUnprocessable()
+            ->assertJsonPath('errors.client_id.0', 'O cliente selecionado é inválido.');
+    }
+
     public function test_contract_total_is_calculated_from_current_items_and_quantity_discount(): void
     {
         $client = Client::query()->create([

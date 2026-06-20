@@ -1,4 +1,5 @@
 .git
+.docker/mysql/dbdata
 .env
 .env.*
 node_modules

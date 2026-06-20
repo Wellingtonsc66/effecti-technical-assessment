@@ -58,6 +58,8 @@ Entrada de CSS com Tailwind CSS 4.
 - `docker-compose.yml`
 Orquestra os containers da aplicação.
 
+O MySQL persiste os dados em `./.docker/mysql/dbdata`, montado em `/var/lib/mysql`, para manter o banco disponível após recriação dos containers. Esse diretório local é ignorado pelo Git.
+
 - `docker/php/Dockerfile`
 Define o ambiente PHP-FPM 8.5 usado pelo projeto.
 
