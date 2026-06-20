@@ -35,7 +35,7 @@ class ClientRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'document' => preg_replace('/\D/', '', (string) $this->input('document')),
+            'document' => onlyNumbers($this->input('document')),
         ]);
     }
 

@@ -9,7 +9,7 @@ class CpfCnpj implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $document = preg_replace('/\D/', '', (string) $value);
+        $document = onlyNumbers($value);
 
         if (! $this->isValidCpf($document) && ! $this->isValidCnpj($document)) {
             $fail('O campo :attribute deve conter um CPF ou CNPJ válido.');
