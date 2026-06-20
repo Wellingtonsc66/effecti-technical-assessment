@@ -76,10 +76,12 @@ async function saveEntity(endpoint, form, resetForm, successMessage) {
             Object.entries(form).filter(([key, value]) => key !== 'id' && value !== '' && value !== null),
         );
 
+        const normalizedPayload = normalizePayload(endpoint, payload);
+
         if (form.id) {
-            await axios.put(`${endpoint}/${form.id}`, payload);
+            await axios.put(`${endpoint}/${form.id}`, normalizedPayload);
         } else {
-            await axios.post(endpoint, payload);
+            await axios.post(endpoint, normalizedPayload);
         }
 
         resetForm();
@@ -123,7 +125,7 @@ async function addContractItem() {
         };
 
         if (itemForm.unit_value !== '') {
-            payload.unit_value = itemForm.unit_value;
+            payload.unit_value = currencyToApiValue(itemForm.unit_value);
         }
 
         await axios.post(`/api/contracts/${itemForm.contract_id}/items`, payload);
@@ -161,7 +163,10 @@ function editClient(client) {
 }
 
 function editService(service) {
-    Object.assign(serviceForm, pick(service, ['id', 'name', 'monthly_base_value']));
+    Object.assign(serviceForm, {
+        ...pick(service, ['id', 'name', 'monthly_base_value']),
+        monthly_base_value: formatDecimalCurrency(service.monthly_base_value),
+    });
     activeTab.value = 'services';
 }
 
@@ -172,7 +177,7 @@ function editContract(contract) {
 
 function useBaseValue() {
     const service = services.value.find((item) => item.id === Number(itemForm.service_id));
-    itemForm.unit_value = service?.monthly_base_value ?? '';
+    itemForm.unit_value = service ? formatDecimalCurrency(service.monthly_base_value) : '';
 }
 
 function resetClientForm() {
@@ -181,6 +186,14 @@ function resetClientForm() {
 
 function handleDocumentInput(event) {
     clientForm.document = formatDocument(event.target.value);
+}
+
+function handleMonthlyBaseValueInput(event) {
+    serviceForm.monthly_base_value = formatCurrencyInput(event.target.value);
+}
+
+function handleUnitValueInput(event) {
+    itemForm.unit_value = formatCurrencyInput(event.target.value);
 }
 
 function resetServiceForm() {
@@ -202,6 +215,17 @@ function resetItemForm(clearContract = true) {
 
 function pageItems(response) {
     return response.data.data.data ?? response.data.data ?? [];
+}
+
+function normalizePayload(endpoint, payload) {
+    if (endpoint === '/api/services') {
+        return {
+            ...payload,
+            monthly_base_value: currencyToApiValue(payload.monthly_base_value),
+        };
+    }
+
+    return payload;
 }
 
 function pick(source, keys) {
@@ -236,6 +260,40 @@ function statusSeverity(status) {
 
 function formatCurrency(value) {
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value ?? 0));
+}
+
+function formatCurrencyInput(value) {
+    const digits = String(value ?? '').replace(/\D/g, '').slice(0, 12);
+
+    if (!digits) {
+        return '';
+    }
+
+    return new Intl.NumberFormat('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(Number(digits) / 100);
+}
+
+function formatDecimalCurrency(value) {
+    if (value === '' || value === null || value === undefined) {
+        return '';
+    }
+
+    return new Intl.NumberFormat('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(Number(value));
+}
+
+function currencyToApiValue(value) {
+    const digits = String(value ?? '').replace(/\D/g, '');
+
+    if (!digits) {
+        return '';
+    }
+
+    return (Number(digits) / 100).toFixed(2);
 }
 
 function formatDocument(value) {
@@ -382,7 +440,13 @@ function formatDocument(value) {
 
                             <label class="field-label">
                                 Valor base mensal
-                                <InputText v-model="serviceForm.monthly_base_value" inputmode="decimal" placeholder="0.00" required />
+                                <InputText
+                                    :model-value="serviceForm.monthly_base_value"
+                                    inputmode="numeric"
+                                    placeholder="0,00"
+                                    required
+                                    @input="handleMonthlyBaseValueInput"
+                                />
                             </label>
 
                             <div class="flex gap-2">
@@ -498,7 +562,13 @@ function formatDocument(value) {
 
                                 <label class="field-label">
                                     Valor unitário
-                                    <InputText v-model="itemForm.unit_value" inputmode="decimal" :disabled="!canEditSelectedContract" placeholder="Opcional se usar valor base" />
+                                    <InputText
+                                        :model-value="itemForm.unit_value"
+                                        inputmode="numeric"
+                                        :disabled="!canEditSelectedContract"
+                                        placeholder="Opcional se usar valor base"
+                                        @input="handleUnitValueInput"
+                                    />
                                 </label>
 
                                 <Button type="submit" label="Adicionar" :disabled="!canEditSelectedContract" :loading="loading" />
