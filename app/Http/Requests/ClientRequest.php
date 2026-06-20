@@ -24,7 +24,7 @@ class ClientRequest extends FormRequest
             ],
             'email' => [
                 'required',
-                'email:rfc',
+                'email:rfc,filter',
                 'max:255',
                 Rule::unique('clients', 'email')->ignore($client),
             ],
